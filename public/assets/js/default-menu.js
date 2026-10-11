@@ -738,18 +738,22 @@ function iconHoverFn() {
   clearNavDropdown();
 }
 function setNavActive() {
-  let currentPath = window.location.pathname.split("/")[0];
+  const normalizePagePath = (path) => {
+    const pathname = new URL(path, window.location.href).pathname;
+    const page = pathname.replace(/\/+$/, "").split("/").pop() || "index";
 
-  currentPath =
-    location.pathname == "/" ? "index.html" : location.pathname.substring(1);
-  currentPath = currentPath.substring(currentPath.lastIndexOf("/") + 1);
+    // Cloudflare may serve `page.html` at `/page`; treat both URLs as the
+    // same page when deciding which sidebar item is active.
+    return page.replace(/\.html$/i, "").toLowerCase();
+  };
+
+  const currentPath = normalizePagePath(window.location.pathname);
   let sidemenuItems = document.querySelectorAll(".sidenav-link");
   sidemenuItems.forEach((e) => {
-    if (currentPath === "/") {
-      currentPath = "index.html";
-    }
+    const href = e.getAttribute('href');
+    if (!href || href === "#" || href.startsWith("javascript:")) return;
 
-    if (e.getAttribute('href') === currentPath) {
+    if (normalizePagePath(href) === currentPath) {
       e.classList.add('active');
       e.parentElement.classList.add('active');
       e.parentElement.classList.add('open');
