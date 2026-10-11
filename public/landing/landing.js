@@ -167,7 +167,9 @@
     if (!page) return;
     showcaseBrowser.classList.add('is-loading');
     $('#preview-name').textContent = page.title;
-    $('#preview-url').textContent = page.url;
+    const previewUrl = $('#preview-url');
+    previewUrl.textContent = page.url;
+    previewUrl.href = page.src;
     projectFrame.src = page.src;
     projectFrame.title = `Live MetraUI ${page.label} dashboard preview`;
     $$('.preview-tab').forEach((tab) => {
@@ -176,15 +178,11 @@
       tab.setAttribute('aria-selected', String(active));
     });
     $$('.dashboard-card').forEach((card) => {
-      const active = card.querySelector('[data-demo]')?.dataset.demo === key;
+      const active = card.querySelector('.dashboard-live-frame')?.dataset.livePreview === page.src;
       card.classList.toggle('preview-active', active);
     });
   };
   $$('.preview-tab').forEach((tab) => tab.addEventListener('click', () => setPreview(tab.dataset.preview)));
-  $$('[data-demo]').forEach((button) => button.addEventListener('click', () => {
-    setPreview(button.dataset.demo);
-    $('#showcase').scrollIntoView({ behavior: 'smooth' });
-  }));
   // Keep the navigation indicator in sync with the current section.
   const navLinks = $$('.main-nav a');
   const sectionObserver = new IntersectionObserver((entries) => {

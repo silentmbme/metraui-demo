@@ -318,8 +318,15 @@ textarea,
   color: var(--muted);
   font-family: var(--font-mono, monospace);
   font-size: 12px;
+  text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.preview-card-route:hover,
+.preview-card-route:focus-visible {
+  color: var(--brand-strong);
+  text-decoration: underline;
 }
 
 .project-preview {
