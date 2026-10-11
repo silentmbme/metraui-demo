@@ -2,11 +2,11 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Make the product landing page the default entry point while preserving
+    // Send first-time visitors to the product landing page while preserving
     // direct access to the dashboard and all other static pages.
     if (url.pathname === "/") {
-      url.pathname = "/landing/index.html";
-      return env.ASSETS.fetch(new Request(url, request));
+      url.pathname = "/landing/";
+      return Response.redirect(url.toString(), 302);
     }
 
     return env.ASSETS.fetch(request);
