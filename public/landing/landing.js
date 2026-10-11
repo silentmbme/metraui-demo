@@ -144,6 +144,7 @@
     support: { title: 'Support dashboard', label: 'support', url: 'support-dashboard.html', src: '../support-dashboard.html' }
   };
   projectFrame = $('#project-preview');
+  if (projectFrame) {
   const showcaseBrowser = projectFrame.closest('.showcase-browser');
   const syncProjectPreviewScale = () => {
     const referenceWidth = 1600;
@@ -183,6 +184,7 @@
     });
   };
   $$('.preview-tab').forEach((tab) => tab.addEventListener('click', () => setPreview(tab.dataset.preview)));
+  }
   // Keep the navigation indicator in sync with the current section.
   const navLinks = $$('.main-nav a');
   const sectionObserver = new IntersectionObserver((entries) => {
