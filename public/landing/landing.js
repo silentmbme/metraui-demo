@@ -155,7 +155,7 @@
   });
 
   const previewPages = {
-    sales: { title: 'Sales dashboard', label: 'sales', url: 'sales-dashboard/', src: '../sales-dashboard/' },
+    sales: { title: 'Sales dashboard', label: 'sales', url: 'html/', src: '../html/' },
     ecommerce: { title: 'eCommerce dashboard', label: 'eCommerce', url: 'ecommerce-dashboard.html', src: '../ecommerce-dashboard.html' },
     crm: { title: 'CRM dashboard', label: 'CRM', url: 'crm-dashboard.html', src: '../crm-dashboard.html' },
     projects: { title: 'Projects dashboard', label: 'projects', url: 'projects-dashboard.html', src: '../projects-dashboard.html' },
