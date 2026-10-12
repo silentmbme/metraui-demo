@@ -114,23 +114,45 @@
   }, { threshold: 0.08 });
   $$('.reveal').forEach((element) => revealObserver.observe(element));
 
-  // Defer card previews until nearby; eager-load each one once requested so
-  // the browser's own lazy-loading threshold does not add another delay.
-  const dashboardPreviewObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      const frame = entry.target;
-      frame.addEventListener('load', () => {
-        frame.closest('.dashboard-live-preview, .app-live-preview')?.classList.remove('is-loading');
-        settlePreviewTheme();
-      }, { once: true });
-      frame.closest('.dashboard-live-preview, .app-live-preview')?.classList.add('is-loading');
-      frame.loading = 'eager';
-      frame.src = frame.dataset.livePreview;
-      observer.unobserve(frame);
+  // Keep the gallery light: full dashboards only open from their direct links.
+  $$('.dashboard-live-frame').forEach((frame) => {
+    const container = frame.closest('.dashboard-live-preview, .app-live-preview');
+    const filename = frame.dataset.livePreview.split('/').pop().replace(/\.html$/i, '');
+    container?.classList.add('dashboard-screenshot');
+    container?.style.setProperty('--dashboard-preview', `url("../assets/images/landing-previews/${filename}.png")`);
+  });
+
+  const guidedDemo = $('#guided-demo');
+  const demoCopy = [
+    'Track the numbers that matter, without losing the bigger picture.',
+    'Move from activity to customer context in one focused workspace.',
+    'Automate the repeatable work and keep your team moving forward.'
+  ];
+  let demoStep = 0;
+  const showDemoStep = (step) => {
+    demoStep = Math.max(0, Math.min(step, demoCopy.length - 1));
+    $$('.guided-demo-scene').forEach((scene, index) => {
+      const active = index === demoStep;
+      scene.hidden = !active;
+      scene.classList.toggle('is-active', active);
     });
-  }, { rootMargin: '120px 0px' });
-  $$('.dashboard-live-frame').forEach((frame) => dashboardPreviewObserver.observe(frame));
+    $$('.guided-demo-progress span').forEach((item, index) => item.classList.toggle('is-active', index <= demoStep));
+    $('#guided-demo-copy').textContent = demoCopy[demoStep];
+    $('[data-demo-prev]').disabled = demoStep === 0;
+    $('[data-demo-next]').innerHTML = demoStep === demoCopy.length - 1
+      ? 'Start again <i class="ri-restart-line"></i>'
+      : 'Next <i class="ri-arrow-right-line"></i>';
+  };
+  $$('[data-demo-open]').forEach((trigger) => trigger.addEventListener('click', () => {
+    showDemoStep(0);
+    guidedDemo.showModal();
+  }));
+  $('[data-demo-close]').addEventListener('click', () => guidedDemo.close());
+  $('[data-demo-prev]').addEventListener('click', () => showDemoStep(demoStep - 1));
+  $('[data-demo-next]').addEventListener('click', () => showDemoStep(demoStep === demoCopy.length - 1 ? 0 : demoStep + 1));
+  guidedDemo.addEventListener('click', (event) => {
+    if (event.target === guidedDemo) guidedDemo.close();
+  });
 
   const previewPages = {
     sales: { title: 'Sales dashboard', label: 'sales', url: 'index.html', src: '../index.html' },
@@ -193,7 +215,7 @@
     const target = `#${visible.target.id}`;
     navLinks.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === target));
   }, { rootMargin: '-20% 0px -65% 0px', threshold: [0, 0.1, 0.5] });
-  ['features', 'dashboards', 'apps', 'components', 'faq'].forEach((id) => {
+  ['features', 'dashboards', 'components', 'faq'].forEach((id) => {
     const section = document.getElementById(id);
     if (section) sectionObserver.observe(section);
   });

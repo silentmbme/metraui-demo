@@ -31,7 +31,7 @@
       </button>
       <nav class="main-nav" aria-label="Main navigation">
         <a class="active" href="#top">Home</a><a href="#features">Features</a><a href="#dashboards">Dashboards</a><a
-          href="#apps">Applications</a><a href="#components">Components</a><a href="#faq">FAQ</a>
+          href="#components">Components</a><a href="#faq">FAQ</a>
       </nav>
       <div class="nav-actions">
         <button class="theme-toggle" aria-label="Switch to dark theme" title="Switch theme">
@@ -128,7 +128,12 @@
             <span class="section-kicker">LIVE METRAUI DASHBOARDS</span>
             <h2>Dashboards for every team.<br /><em>One familiar system.</em></h2>
           </div>
-          <p>Select a dashboard card to load its actual MetraUI page in the live preview.</p>
+          <div class="dashboard-heading-actions">
+            <p>Explore dashboard styles, then open the original page when you are ready.</p>
+            <button class="button button-outline guided-demo-trigger" type="button" data-demo-open>
+              Try guided demo <i class="ri-cursor-line" aria-hidden="true"></i>
+            </button>
+          </div>
         </div>
         <div class="dashboard-grid">
           <article class="dashboard-card featured-card reveal">
@@ -326,7 +331,7 @@
 
 
 
-    <section class="section" id="apps">
+    <!-- Removed: complete application suite section.
       <div class="section-shell">
         <div class="section-heading split reveal">
           <div>
@@ -467,7 +472,7 @@
           </article>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <section class="section components-section" id="components">
       <div class="section-shell">
@@ -580,6 +585,40 @@
     </section>
   </main>
 
+  <dialog class="guided-demo" id="guided-demo" aria-labelledby="guided-demo-title">
+    <div class="guided-demo-shell">
+      <header class="guided-demo-header">
+        <div>
+          <span class="guided-demo-kicker">INTERACTIVE WALKTHROUGH</span>
+          <h2 id="guided-demo-title">See the workspace come together.</h2>
+        </div>
+        <button class="guided-demo-close" type="button" data-demo-close aria-label="Close guided demo"><i class="ri-close-line"></i></button>
+      </header>
+      <div class="guided-demo-progress" aria-label="Demo progress"><span></span><span></span><span></span></div>
+      <div class="guided-demo-screen" aria-live="polite">
+        <section class="guided-demo-scene is-active" data-demo-scene="0">
+          <div class="demo-appbar"><b>MetraUI</b><span>Overview</span><i class="ri-notification-3-line"></i><i class="ri-user-3-line"></i></div>
+          <aside class="demo-sidebar"><i class="ri-dashboard-line"></i><i class="ri-line-chart-line"></i><i class="ri-team-line"></i><i class="ri-settings-3-line"></i></aside>
+          <div class="demo-content"><span class="demo-eyebrow">GOOD MORNING, ALEX</span><h3>Sales performance is <em>growing.</em></h3><div class="demo-metrics"><b>$86.4k<small>Revenue</small></b><b>+18.2%<small>Growth</small></b><b>2,481<small>Orders</small></b></div><div class="demo-chart"><span></span><span></span><span></span><span></span><span></span><span></span><i></i></div></div>
+          <span class="demo-cursor demo-cursor-one"><i class="ri-cursor-fill"></i><b>Explore metrics</b></span>
+        </section>
+        <section class="guided-demo-scene" data-demo-scene="1" hidden>
+          <div class="demo-appbar"><b>MetraUI</b><span>Customers</span><i class="ri-search-line"></i><i class="ri-user-3-line"></i></div>
+          <aside class="demo-sidebar"><i class="ri-dashboard-line"></i><i class="ri-line-chart-line"></i><i class="ri-team-fill"></i><i class="ri-settings-3-line"></i></aside>
+          <div class="demo-content"><span class="demo-eyebrow">CUSTOMER WORKSPACE</span><h3>Every customer, <em>in context.</em></h3><div class="demo-table"><div><b>Customer</b><b>Status</b><b>Value</b></div><div><span class="demo-avatar">AM</span><span>Aria Morgan</span><em>Active</em><strong>$12,400</strong></div><div><span class="demo-avatar blue">JS</span><span>Jordan Smith</span><em>Active</em><strong>$9,850</strong></div><div><span class="demo-avatar orange">RK</span><span>Ravi Kumar</span><em>Review</em><strong>$7,620</strong></div></div></div>
+          <span class="demo-cursor demo-cursor-two"><i class="ri-cursor-fill"></i><b>Open customer</b></span>
+        </section>
+        <section class="guided-demo-scene" data-demo-scene="2" hidden>
+          <div class="demo-appbar"><b>MetraUI</b><span>Automations</span><i class="ri-flashlight-line"></i><i class="ri-user-3-line"></i></div>
+          <aside class="demo-sidebar"><i class="ri-dashboard-line"></i><i class="ri-line-chart-line"></i><i class="ri-team-line"></i><i class="ri-settings-3-fill"></i></aside>
+          <div class="demo-content"><span class="demo-eyebrow">SMART WORKFLOWS</span><h3>Turn work into <em>momentum.</em></h3><div class="demo-flow"><div><i class="ri-mail-send-line"></i><b>New order</b></div><span></span><div><i class="ri-user-add-line"></i><b>Assign owner</b></div><span></span><div><i class="ri-checkbox-circle-line"></i><b>Notify team</b></div></div></div>
+          <span class="demo-cursor demo-cursor-three"><i class="ri-cursor-fill"></i><b>Activate flow</b></span>
+        </section>
+      </div>
+      <footer class="guided-demo-footer"><p id="guided-demo-copy">Track the numbers that matter, without losing the bigger picture.</p><div><button class="button button-outline" type="button" data-demo-prev>Back</button><button class="button button-primary" type="button" data-demo-next>Next <i class="ri-arrow-right-line"></i></button></div></footer>
+    </div>
+  </dialog>
+
   <footer class="site-footer">
     <div class="section-shell">
       <div class="footer-main">
@@ -599,7 +638,6 @@
           <b>Explore MetraUI</b>
           <a href="#features">Features</a>
           <a href="#dashboards">Live dashboards</a>
-          <a href="#apps">Applications</a>
           <a href="#components">UI toolkit</a>
         </nav>
         <nav class="footer-col" aria-label="Resources and help">
