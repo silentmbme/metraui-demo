@@ -1,5 +1,15 @@
 (function () {
   "use strict";
+  const header = document.querySelector(".docs-header");
+  if (header && "ResizeObserver" in window) {
+    const headerObserver = new ResizeObserver(function () {
+      document.documentElement.style.setProperty(
+        "--docs-header-height",
+        header.getBoundingClientRect().height + "px"
+      );
+    });
+    headerObserver.observe(header);
+  }
   const links = Array.from(document.querySelectorAll(".docs-nav-link"));
   const sections = Array.from(document.querySelectorAll(".docs-section"));
   const search = document.getElementById("docs-search");
