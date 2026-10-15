@@ -90,6 +90,7 @@
     menuButton.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
   });
   $$('.main-nav a').forEach((link) => link.addEventListener('click', () => {
+    $$('.main-nav a').forEach((item) => item.classList.toggle('active', item === link));
     navigation.classList.remove('open');
     menuButton.setAttribute('aria-expanded', 'false');
   }));
