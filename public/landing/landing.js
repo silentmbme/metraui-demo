@@ -127,10 +127,22 @@
   // Keep the gallery light: full dashboards only open from their direct links.
   $$('.dashboard-live-frame').forEach((frame) => {
     const container = frame.closest('.dashboard-live-preview, .app-live-preview');
-    const filename = frame.dataset.livePreview.split('/').pop().replace(/\.html$/i, '');
+    if (container?.classList.contains('toolkit-chart-preview')) return;
+    const previewPath = frame.dataset.livePreview || frame.getAttribute('src');
+    if (!previewPath) return;
+    const filename = previewPath.split('/').pop().replace(/\.html$/i, '');
     container?.classList.add('dashboard-screenshot');
     container?.style.setProperty('--dashboard-preview', `url("../assets/images/landing-previews/${filename}.png")`);
   });
+
+  // The chart card uses a live page instead of a static screenshot. Reveal it
+  // once its iframe has rendered, and keep the preview surface visible on error.
+  const chartPreview = $('.toolkit-chart-preview');
+  const chartFrame = $('.toolkit-chart-preview .dashboard-live-frame');
+  if (chartPreview && chartFrame) {
+    chartFrame.addEventListener('load', () => chartPreview.classList.remove('is-loading'));
+    chartFrame.addEventListener('error', () => chartPreview.classList.remove('is-loading'));
+  }
 
   const guidedDemo = $('#guided-demo');
   const demoCopy = [

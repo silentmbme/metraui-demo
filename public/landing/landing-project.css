@@ -125,7 +125,7 @@ textarea,
 .preview-tab:hover,
 .purple-btn,
 .button-white {
-  background: var(--brand-bright);
+  background: #fff;
   color: #14200d;
 }
 
