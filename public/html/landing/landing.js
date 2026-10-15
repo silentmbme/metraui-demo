@@ -85,8 +85,6 @@
   const menuButton = $('.menu-toggle');
   const navigation = $('.main-nav');
   const navLinks = $$('.main-nav a');
-  let pendingNavigationTarget = null;
-  let navigationSettleTimer;
   const setActiveNavigation = (target) => {
     navLinks.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === target));
   };
@@ -97,7 +95,6 @@
   });
   navLinks.forEach((link) => link.addEventListener('click', (event) => {
     const target = link.getAttribute('href');
-    pendingNavigationTarget = target;
     setActiveNavigation(target);
     navigation.classList.remove('open');
     menuButton.setAttribute('aria-expanded', 'false');
@@ -110,29 +107,9 @@
 
   const header = $('.site-header');
   const backTop = $('#back-top');
-  const navigationSections = navLinks
-    .map((link) => ({ target: link.getAttribute('href'), section: document.querySelector(link.getAttribute('href')) }))
-    .filter(({ target, section }) => target !== '#top' && section);
-  const updateActiveNavigation = () => {
-    if (pendingNavigationTarget) return;
-    const marker = window.scrollY + header.offsetHeight + 24;
-    const currentSection = navigationSections.reduce((current, item) => {
-      const top = window.scrollY + item.section.getBoundingClientRect().top;
-      return top <= marker && (!current || top > current.top) ? { ...item, top } : current;
-    }, null);
-    setActiveNavigation(currentSection?.target || '#top');
-  };
   const updateScrollState = () => {
     header.classList.toggle('scrolled', window.scrollY > 12);
     backTop.classList.toggle('visible', window.scrollY > 500);
-    updateActiveNavigation();
-    if (pendingNavigationTarget) {
-      window.clearTimeout(navigationSettleTimer);
-      navigationSettleTimer = window.setTimeout(() => {
-        pendingNavigationTarget = null;
-        updateActiveNavigation();
-      }, 150);
-    }
   };
   window.addEventListener('scroll', updateScrollState, { passive: true });
   updateScrollState();
