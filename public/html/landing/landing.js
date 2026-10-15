@@ -110,16 +110,17 @@
 
   const header = $('.site-header');
   const backTop = $('#back-top');
+  const navigationSections = navLinks
+    .map((link) => ({ target: link.getAttribute('href'), section: document.querySelector(link.getAttribute('href')) }))
+    .filter(({ target, section }) => target !== '#top' && section);
   const updateActiveNavigation = () => {
     if (pendingNavigationTarget) return;
     const marker = window.scrollY + header.offsetHeight + 24;
-    let target = '#top';
-    navLinks.forEach((link) => {
-      const href = link.getAttribute('href');
-      const section = href === '#top' ? null : document.querySelector(href);
-      if (section && section.offsetTop <= marker) target = href;
-    });
-    setActiveNavigation(target);
+    const currentSection = navigationSections.reduce((current, item) => {
+      const top = window.scrollY + item.section.getBoundingClientRect().top;
+      return top <= marker && (!current || top > current.top) ? { ...item, top } : current;
+    }, null);
+    setActiveNavigation(currentSection?.target || '#top');
   };
   const updateScrollState = () => {
     header.classList.toggle('scrolled', window.scrollY > 12);
