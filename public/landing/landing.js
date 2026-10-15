@@ -104,6 +104,15 @@
   updateScrollState();
   backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
+  // `#top` is the sticky header, so native fragment navigation may consider it
+  // visible even while the page content is scrolled down. Always return to the
+  // document origin for the Home, brand, and footer top links.
+  $$('a[href="#top"]').forEach((link) => link.addEventListener('click', (event) => {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    history.replaceState(null, '', '#top');
+  }));
+
   // Reveal sections only as they approach the viewport.
   const revealObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
